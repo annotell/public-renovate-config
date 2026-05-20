@@ -1,20 +1,30 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
 
-  // SHA-pin all GitHub Actions references. The schedule in schedule.json5
-  // already opens up GHA to any-time updates.
+  // SHA-pin every `uses:` line and keep the human-readable tag as a trailing
+  // comment, e.g. `actions/checkout@a1b2c3... # v4.1.0`.
   extends: ["helpers:pinGitHubActionDigests"],
 
   packageRules: [
+    // Low-risk bumps: patch + minor, plus pure digest moves (same tag, new
+    // SHA — usually the initial pinDigest pass or a tag re-push). Grouped
+    // into one PR with `autoreview` so the AI bot can merge it if safe.
     {
       matchManagers: ["github-actions"],
-      groupName: "github actions",
-      groupSlug: "github-actions",
-      // SHA bumps for actions that also publish a semver tag come through as
-      // "digest" updates. Auto-merging these is generally safe because the
-      // semver tag is already pinned; uncomment if/when the team agrees.
-      // matchUpdateTypes: ["digest", "pinDigest"],
-      // automerge: true,
+      matchUpdateTypes: ["minor", "patch", "digest", "pinDigest"],
+      groupName: "github actions (non-major)",
+      groupSlug: "github-actions-non-major",
+      addLabels: ["autoreview"],
+      automerge: true,
+    },
+    // Major bumps: one PR per action. Action inputs/outputs frequently break
+    // across majors, so grouping them into a single PR makes triage harder
+    // than it needs to be. AI bot still reviews; a human clicks merge.
+    {
+      matchManagers: ["github-actions"],
+      matchUpdateTypes: ["major"],
+      addLabels: ["autoreview"],
+      automerge: false,
     },
   ],
 }
