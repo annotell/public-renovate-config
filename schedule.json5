@@ -1,7 +1,6 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
 
-  // `schedule` controls when PRs are CREATED or UPDATED, not when they merge.
   // Goal: language deps only land during business hours so the
   // image-updater-driven prod deploys happen while people are around.
   // GHA is low-risk and can land any time.
@@ -15,7 +14,6 @@
         "npm",
         "pnpm",
         "gomod",
-        "sbt",
         "gradle",
         "cargo",
         "dockerfile",
