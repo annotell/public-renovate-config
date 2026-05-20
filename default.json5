@@ -1,0 +1,36 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+
+  // Entry point. Every repo extending `github>annotell/renovate-config`
+  // resolves to this file. Repos opt out of individual sub-presets with
+  // `ignorePresets`, e.g.:
+  //   { "ignorePresets": ["github>annotell/renovate-config//python"] }
+  extends: [
+    "config:recommended",
+    "github>annotell/renovate-config//schedule",
+    "github>annotell/renovate-config//security",
+    "github>annotell/renovate-config//gha",
+    // Language presets are no-ops in repos that don't use the manager,
+    // so it's safe to include them all by default.
+    // "github>annotell/renovate-config//python",
+    // "github>annotell/renovate-config//golang",
+    // "github>annotell/renovate-config//scala",
+    // "github>annotell/renovate-config//frontend",
+    // "github>annotell/renovate-config//rust",
+  ],
+
+  timezone: "Europe/Stockholm",
+
+  // Cooldown — give upstream releases a week to surface regressions before
+  // we offer the bump. Security PRs bypass this via security.json5.
+  minimumReleaseAge: "7 days",
+
+  // Additive across all presets and repo-local config.
+  addLabels: ["dependencies"],
+
+  // Dependency Dashboard issue per repo — best single-pane visibility.
+  dependencyDashboard: true,
+
+  // Don't churn open PRs unless they actually conflict.
+  rebaseWhen: "conflicted",
+}

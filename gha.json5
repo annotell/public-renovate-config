@@ -1,0 +1,20 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+
+  // SHA-pin all GitHub Actions references. The schedule in schedule.json5
+  // already opens up GHA to any-time updates.
+  extends: ["helpers:pinGitHubActionDigests"],
+
+  packageRules: [
+    {
+      matchManagers: ["github-actions"],
+      groupName: "github actions",
+      groupSlug: "github-actions",
+      // SHA bumps for actions that also publish a semver tag come through as
+      // "digest" updates. Auto-merging these is generally safe because the
+      // semver tag is already pinned; uncomment if/when the team agrees.
+      // matchUpdateTypes: ["digest", "pinDigest"],
+      // automerge: true,
+    },
+  ],
+}
