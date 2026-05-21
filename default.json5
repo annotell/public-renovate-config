@@ -9,10 +9,11 @@
     "config:recommended",
     "github>annotell/renovate-config//schedule",
     "github>annotell/renovate-config//security",
+    "github>annotell/renovate-config//internal",
     "github>annotell/renovate-config//gha",
     // Language presets are no-ops in repos that don't use the manager,
     // so it's safe to include them all by default.
-    // "github>annotell/renovate-config//python",
+    "github>annotell/renovate-config//python",
     // "github>annotell/renovate-config//golang",
     // "github>annotell/renovate-config//scala",
     // "github>annotell/renovate-config//frontend",
