@@ -22,10 +22,12 @@ except entries in the bot's `force` block (currently just `addLabels: ['autorevi
 
 | File | Purpose | Opt-out string |
 |---|---|---|
-| `default.json5` | Entry point. Cooldown, labels, dependency dashboard. | — (don't extend this repo at all) |
-| `schedule.json5` | Time windows: language deps daytime-only, GHA any time. | `github>annotell/renovate-config//schedule` |
+| `default.json5` | Entry point. 7-day cooldown, labels, dependency dashboard. | — (don't extend this repo at all) |
+| `schedule.json5` | Time windows: language deps daytime-only weekdays, GHA any hour weekdays. | `github>annotell/renovate-config//schedule` |
 | `security.json5` | Vuln PRs bypass cooldown + schedule. | `github>annotell/renovate-config//security` |
-| `gha.json5` | SHA-pin GitHub Actions, group as one PR. | `github>annotell/renovate-config//gha` |
+| `internal.json5` | Drops the 7-day cooldown for Kognic-published packages (internal GHA, `kognic-*` Python). | `github>annotell/renovate-config//internal` |
+| `gha.json5` | SHA-pin GitHub Actions, group non-major with automerge, one PR per major. | `github>annotell/renovate-config//gha` |
+| `python.json5` | Group non-major with automerge, one PR per major. | `github>annotell/renovate-config//python` |
 
 ## Opting out of a sub-preset
 
