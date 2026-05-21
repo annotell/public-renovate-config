@@ -1,0 +1,40 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+
+  packageRules: [
+    // Patch + minor for any Python manager: grouped into one PR, autoreview
+    // label so the AI bot can approve, automerge so GitHub merges as soon as
+    // CI passes and the bot signs off.
+    {
+      matchManagers: [
+        "pip_requirements",
+        "pip_setup",
+        "pep621",
+        "poetry",
+        "pipenv",
+        "pip-compile",
+      ],
+      matchUpdateTypes: ["minor", "patch"],
+      groupName: "python (non-major)",
+      groupSlug: "python-non-major",
+      addLabels: ["autoreview"],
+      automerge: true,
+    },
+    // Major bumps: one PR per package. Python major bumps frequently break
+    // public APIs (sqlalchemy, pydantic, fastapi, etc.) and benefit from
+    // individual review. AI bot still reviews; a human clicks merge.
+    {
+      matchManagers: [
+        "pip_requirements",
+        "pip_setup",
+        "pep621",
+        "poetry",
+        "pipenv",
+        "pip-compile",
+      ],
+      matchUpdateTypes: ["major"],
+      addLabels: ["autoreview"],
+      automerge: false,
+    },
+  ],
+}

@@ -1,0 +1,41 @@
+---
+name: Validate Renovate config
+
+on:
+  pull_request:
+    paths:
+      - "*.json5"
+      - "*.json"
+      - ".github/workflows/validate.yml"
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      # Validates JSON5 syntax + Renovate schema for every preset file.
+      # Does NOT resolve `github>annotell/renovate-config//...` refs — that
+      # would require the new file to already exist on the default branch,
+      # making cross-file PRs hard to validate.
+      - name: Validate presets
+        run: |
+          set -euo pipefail
+          fail=0
+          for f in *.json5; do
+            echo "::group::$f"
+            if ! npx --yes --package renovate -- renovate-config-validator "$f"; then
+              fail=1
+            fi
+            echo "::endgroup::"
+          done
+          exit "$fail"
