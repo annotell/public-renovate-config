@@ -18,11 +18,17 @@
         "helm-values",
         "kustomize"
       ],
-      "schedule": ["after 08:00 and before 16:00 every weekday"]
+      "schedule": [
+        "after 08:00 and before 16:00 every weekday"
+      ]
     },
     {
-      "matchManagers": ["github-actions"],
-      "schedule": ["every weekday"]
+      "matchManagers": [
+        "github-actions"
+      ],
+      "schedule": [
+        "every weekday"
+      ]
     }
   ]
 }

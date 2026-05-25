@@ -1,19 +1,36 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["helpers:pinGitHubActionDigests"],
+  "extends": [
+    "helpers:pinGitHubActionDigests"
+  ],
   "packageRules": [
     {
-      "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest",
+        "pinDigest"
+      ],
       "groupName": "github actions (non-major)",
       "groupSlug": "github-actions-non-major",
-      "addLabels": ["autoreview"],
+      "addLabels": [
+        "autoreview"
+      ],
       "automerge": true
     },
     {
-      "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["major"],
-      "addLabels": ["autoreview"],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "addLabels": [
+        "autoreview"
+      ],
       "automerge": false
     }
   ]
