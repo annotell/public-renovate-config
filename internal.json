@@ -23,6 +23,16 @@
         "/^kognic-/"
       ],
       "minimumReleaseAge": "0 days"
+    },
+    {
+      "matchManagers": [
+        "gradle",
+        "gradle-wrapper"
+      ],
+      "matchPackageNames": [
+        "/^com\\.kognic\\./"
+      ],
+      "minimumReleaseAge": "0 days"
     }
   ]
 }

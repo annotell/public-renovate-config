@@ -6,7 +6,8 @@
     "github>annotell/public-renovate-config//security",
     "github>annotell/public-renovate-config//internal",
     "github>annotell/public-renovate-config//gha",
-    "github>annotell/public-renovate-config//python"
+    "github>annotell/public-renovate-config//python",
+    "github>annotell/public-renovate-config//gradle"
   ],
   "timezone": "Europe/Stockholm",
   "minimumReleaseAge": "7 days",
