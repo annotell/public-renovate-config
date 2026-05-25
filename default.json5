@@ -1,23 +1,23 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
 
-  // Entry point. Every repo extending `github>annotell/renovate-config`
+  // Entry point. Every repo extending `github>annotell/public-renovate-config`
   // resolves to this file. Repos opt out of individual sub-presets with
   // `ignorePresets`, e.g.:
-  //   { "ignorePresets": ["github>annotell/renovate-config//python"] }
+  //   { "ignorePresets": ["github>annotell/public-renovate-config//python"] }
   extends: [
     "config:recommended",
-    "github>annotell/renovate-config//schedule",
-    "github>annotell/renovate-config//security",
-    "github>annotell/renovate-config//internal",
-    "github>annotell/renovate-config//gha",
+    "github>annotell/public-renovate-config//schedule",
+    "github>annotell/public-renovate-config//security",
+    "github>annotell/public-renovate-config//internal",
+    "github>annotell/public-renovate-config//gha",
     // Language presets are no-ops in repos that don't use the manager,
     // so it's safe to include them all by default.
-    "github>annotell/renovate-config//python",
-    // "github>annotell/renovate-config//golang",
-    // "github>annotell/renovate-config//scala",
-    // "github>annotell/renovate-config//frontend",
-    // "github>annotell/renovate-config//rust",
+    "github>annotell/public-renovate-config//python",
+    // "github>annotell/public-renovate-config//golang",
+    // "github>annotell/public-renovate-config//scala",
+    // "github>annotell/public-renovate-config//frontend",
+    // "github>annotell/public-renovate-config//rust",
   ],
 
   timezone: "Europe/Stockholm",
