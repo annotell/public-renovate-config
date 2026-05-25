@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "matchManagers": [
+        "pip_requirements",
+        "pip_setup",
+        "pep621",
+        "poetry",
+        "pipenv",
+        "pip-compile"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "python (non-major)",
+      "groupSlug": "python-non-major",
+      "addLabels": ["autoreview"],
+      "automerge": true
+    },
+    {
+      "matchManagers": [
+        "pip_requirements",
+        "pip_setup",
+        "pep621",
+        "poetry",
+        "pipenv",
+        "pip-compile"
+      ],
+      "matchUpdateTypes": ["major"],
+      "addLabels": ["autoreview"],
+      "automerge": false
+    }
+  ]
+}

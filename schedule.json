@@ -1,0 +1,28 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "matchManagers": [
+        "pip_requirements",
+        "poetry",
+        "pep621",
+        "pip_setup",
+        "npm",
+        "pnpm",
+        "gomod",
+        "gradle",
+        "cargo",
+        "dockerfile",
+        "docker-compose",
+        "helmv3",
+        "helm-values",
+        "kustomize"
+      ],
+      "schedule": ["after 08:00 and before 16:00 every weekday"]
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "schedule": ["every weekday"]
+    }
+  ]
+}
