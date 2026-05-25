@@ -10,10 +10,15 @@
         "pipenv",
         "pip-compile"
       ],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "python (non-major)",
       "groupSlug": "python-non-major",
-      "addLabels": ["autoreview"],
+      "addLabels": [
+        "autoreview"
+      ],
       "automerge": true
     },
     {
@@ -25,26 +30,47 @@
         "pipenv",
         "pip-compile"
       ],
-      "matchUpdateTypes": ["major"],
-      "addLabels": ["autoreview"],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "addLabels": [
+        "autoreview"
+      ],
       "automerge": false
     },
     {
       "description": "Python interpreter bumps (requires-python) and the matching python-base container image ship together in one PR, separate from regular 3pp bumps. Manual review: bumping the interpreter is rarely a no-op for our 3pp set, so we don't want this automerged alongside boto3 patches.",
-      "matchDepNames": ["python"],
-      "matchManagers": ["pep621", "poetry", "pipenv", "pip_requirements", "pip_setup", "pip-compile"],
+      "matchDepNames": [
+        "python"
+      ],
+      "matchManagers": [
+        "pep621",
+        "poetry",
+        "pipenv",
+        "pip_requirements",
+        "pip_setup",
+        "pip-compile"
+      ],
       "groupName": "python runtime",
       "groupSlug": "python-runtime",
-      "addLabels": ["autoreview"],
+      "addLabels": [
+        "autoreview"
+      ],
       "automerge": false
     },
     {
       "description": "Pair the python-base Docker image (builder + runner, any registry path) with the interpreter bump above via the shared groupSlug.",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["/python-base/"],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "/python-base/"
+      ],
       "groupName": "python runtime",
       "groupSlug": "python-runtime",
-      "addLabels": ["autoreview"],
+      "addLabels": [
+        "autoreview"
+      ],
       "automerge": false
     }
   ]

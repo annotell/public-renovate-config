@@ -2,8 +2,12 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
-      "matchManagers": ["github-actions"],
-      "matchPackageNames": ["annotell/*"],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchPackageNames": [
+        "annotell/*"
+      ],
       "minimumReleaseAge": "0 days"
     },
     {
@@ -15,7 +19,9 @@
         "pipenv",
         "pip-compile"
       ],
-      "matchPackageNames": ["/^kognic-/"],
+      "matchPackageNames": [
+        "/^kognic-/"
+      ],
       "minimumReleaseAge": "0 days"
     }
   ]

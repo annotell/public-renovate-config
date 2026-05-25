@@ -2,8 +2,14 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
-    "schedule": ["at any time"],
+    "schedule": [
+      "at any time"
+    ],
     "minimumReleaseAge": null,
-    "labels": ["dependencies", "security"]
+    "labels": [
+      "dependencies",
+      "security",
+      "autoreview"
+    ]
   }
 }

@@ -10,7 +10,9 @@
   ],
   "timezone": "Europe/Stockholm",
   "minimumReleaseAge": "7 days",
-  "addLabels": ["dependencies"],
+  "addLabels": [
+    "dependencies"
+  ],
   "dependencyDashboard": true,
   "rebaseWhen": "conflicted"
 }
