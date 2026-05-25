@@ -1,37 +1,16 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
-
-  // Entry point. Every repo extending `github>annotell/public-renovate-config`
-  // resolves to this file. Repos opt out of individual sub-presets with
-  // `ignorePresets`, e.g.:
-  //   { "ignorePresets": ["github>annotell/public-renovate-config//python"] }
-  extends: [
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
     "config:recommended",
-    "github>annotell/public-renovate-config//schedule",
-    "github>annotell/public-renovate-config//security",
-    "github>annotell/public-renovate-config//internal",
-    "github>annotell/public-renovate-config//gha",
-    // Language presets are no-ops in repos that don't use the manager,
-    // so it's safe to include them all by default.
-    "github>annotell/public-renovate-config//python",
-    // "github>annotell/public-renovate-config//golang",
-    // "github>annotell/public-renovate-config//scala",
-    // "github>annotell/public-renovate-config//frontend",
-    // "github>annotell/public-renovate-config//rust",
+    "github>annotell/public-renovate-config//schedule.json5",
+    "github>annotell/public-renovate-config//security.json5",
+    "github>annotell/public-renovate-config//internal.json5",
+    "github>annotell/public-renovate-config//gha.json5",
+    "github>annotell/public-renovate-config//python.json5"
   ],
-
-  timezone: "Europe/Stockholm",
-
-  // Cooldown — give upstream releases a week to surface regressions before
-  // we offer the bump. Security PRs bypass this via security.json5.
-  minimumReleaseAge: "7 days",
-
-  // Additive across all presets and repo-local config.
-  addLabels: ["dependencies"],
-
-  // Dependency Dashboard issue per repo — best single-pane visibility.
-  dependencyDashboard: true,
-
-  // Don't churn open PRs unless they actually conflict.
-  rebaseWhen: "conflicted",
+  "timezone": "Europe/Stockholm",
+  "minimumReleaseAge": "7 days",
+  "addLabels": ["dependencies"],
+  "dependencyDashboard": true,
+  "rebaseWhen": "conflicted"
 }
