@@ -36,6 +36,7 @@ comments.
 | `internal.json` | Drops the 7-day cooldown for Kognic-published packages (internal GHA, `kognic-*` Python). | `github>annotell/public-renovate-config//internal` |
 | `gha.json` | SHA-pin GitHub Actions, group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//gha` |
 | `python.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//python` |
+| `gradle.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//gradle` |
 
 ## Why each preset exists
 
@@ -66,8 +67,9 @@ The 7-day cooldown protects against third-party packages that get yanked,
 force-pushed, or compromised shortly after release. None of that applies to
 packages we publish ourselves — we know what we shipped.
 
-Scope today is GHA (`annotell/*`) and Python (`kognic-*`). Other ecosystems
-(npm, helm, go, docker) will be added when we roll them out.
+Scope today is GHA (`annotell/*`), Python (`kognic-*`), and Gradle
+(`com.kognic.*`). Other ecosystems (npm, helm, go, docker) will be added when
+we roll them out.
 
 ### `gha.json` — SHA-pin actions, group non-major
 
@@ -85,6 +87,17 @@ Non-major Python bumps grouped into one PR with `autoreview` + `automerge`.
 Major bumps get one PR per package because Python major bumps frequently
 break public APIs (sqlalchemy, pydantic, fastapi, etc.) and benefit from
 individual review.
+
+### `gradle.json` — group non-major, one PR per major
+
+Non-major Gradle bumps (minor + patch) grouped into one PR with `autoreview`
++ `automerge`. Covers both the `gradle` manager (dependencies in
+`libs.versions.toml` / `build.gradle.kts`) and `gradle-wrapper` (the Gradle
+distribution itself).
+
+Major bumps get one PR per dependency because major-version upgrades of core
+Scala libraries (scala-library, pekko, slick, tapir, etc.) frequently break
+source compatibility and benefit from individual review before merging.
 
 ## Opting out of a sub-preset
 
