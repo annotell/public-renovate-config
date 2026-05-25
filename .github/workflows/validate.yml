@@ -30,8 +30,9 @@ jobs:
       - name: Validate presets
         run: |
           set -euo pipefail
+          shopt -s nullglob
           fail=0
-          for f in *.json5; do
+          for f in *.json *.json5; do
             echo "::group::$f"
             if ! npx --yes --package renovate -- renovate-config-validator "$f"; then
               fail=1
