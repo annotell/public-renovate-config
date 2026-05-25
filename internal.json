@@ -1,0 +1,22 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["annotell/*"],
+      "minimumReleaseAge": "0 days"
+    },
+    {
+      "matchManagers": [
+        "pip_requirements",
+        "pip_setup",
+        "pep621",
+        "poetry",
+        "pipenv",
+        "pip-compile"
+      ],
+      "matchPackageNames": ["/^kognic-/"],
+      "minimumReleaseAge": "0 days"
+    }
+  ]
+}
