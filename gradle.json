@@ -15,7 +15,7 @@
       "addLabels": [
         "autoreview"
       ],
-      "automerge": true
+      "automerge": false
     },
     {
       "matchManagers": [
