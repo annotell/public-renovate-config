@@ -37,6 +37,7 @@ comments.
 | `gha.json` | SHA-pin GitHub Actions, group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//gha` |
 | `python.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//python` |
 | `gradle.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//gradle` |
+| `go.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//go` |
 
 ## Why each preset exists
 
@@ -98,6 +99,19 @@ distribution itself).
 Major bumps get one PR per dependency because major-version upgrades of core
 Scala libraries (scala-library, pekko, slick, tapir, etc.) frequently break
 source compatibility and benefit from individual review before merging.
+
+### `go.json` — group non-major, one PR per major
+
+Non-major Go module bumps (minor + patch) grouped into one PR with `autoreview`
++ `automerge`. Go's compatibility promise within a major version means a
+passing test suite is a strong signal that a minor/patch bump is safe.
+
+Major bumps get one PR per module because Go major versions are explicit
+breaking changes (the import path changes, e.g. `foo/v2`) and need code
+changes to adopt — they benefit from individual review.
+
+We don't currently publish internal Go packages, so there's no `kognic-*`
+carve-out in `internal.json` for Go yet. Add one when that changes.
 
 ## Opting out of a sub-preset
 
