@@ -15,5 +15,15 @@
     "dependencies"
   ],
   "dependencyDashboard": true,
-  "rebaseWhen": "conflicted"
+  "rebaseWhen": "conflicted",
+  "packageRules": [
+    {
+      "description": "Exempt docker managers from minimumReleaseAge. Renovate's docker datasource only returns releaseTimestamp for Docker Hub (see lib/modules/datasource/docker/index.ts:86-88, 1078-1154); for GAR/gcr.io/ghcr.io/ECR/Quay it returns tags without timestamps. With minimumReleaseAge set and the default minimumReleaseAgeBehaviour=timestamp-required, these timestamp-less candidates are marked pendingChecks=true. When such a dep is grouped with a timestamped one (e.g. python-base grouped with the pep621 python interpreter via the python-runtime group), generate.ts:192 silently filters the pending one out, producing a single-dep PR. Setting 0 days here makes docker bumps ship without the quarantine, restoring grouped PRs. Side effect: external docker bumps (postgres, cloud-sdk) no longer require manual approval via the dashboard's Pending Status Checks list.",
+      "matchManagers": [
+        "dockerfile",
+        "docker-compose"
+      ],
+      "minimumReleaseAge": "0 days"
+    }
+  ]
 }
