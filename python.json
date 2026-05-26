@@ -74,14 +74,14 @@
       "automerge": false
     },
     {
-      "description": "Bump the locked version in the lockfile (uv.lock, poetry.lock, Pipfile.lock, compiled requirements.txt) even when the declared range in pyproject.toml still satisfies the new version. Without this, ranges like `cachetools >=5,<8` never produce a PR for an in-range release (e.g. 7.1.2 -> 7.1.4), and the lockfile drifts. Scoped to lockfile-aware managers only: pip_requirements and pip_setup are intentionally excluded because they typically have no separate lockfile, and update-lockfile would skip those deps entirely.",
+      "description": "Keep pyproject.toml and the lockfile in sync by raising the declared floor when a new in-range version is released, and updating the lockfile in the same PR. Example: `cachetools >=5,<8` locked at 7.1.2 becomes `>=7.1.4,<8` with uv.lock at 7.1.4 — humans reading pyproject.toml see the actual minimum tested version, and downstream consumers resolving from our published wheels get the same floor. Renovate runs the manager's lock tool (`uv lock`, `poetry lock`, etc.) after the manifest edit, so bump covers what update-lockfile would have done. Scoped to lockfile-aware managers only: pip_requirements and pip_setup are intentionally excluded because they typically have no separate lockfile.",
       "matchManagers": [
         "pep621",
         "poetry",
         "pipenv",
         "pip-compile"
       ],
-      "rangeStrategy": "update-lockfile"
+      "rangeStrategy": "bump"
     }
   ]
 }
