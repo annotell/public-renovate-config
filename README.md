@@ -39,6 +39,7 @@ comments.
 | `gradle.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//gradle` |
 | `go.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//go` |
 | `npm.json` | Group non-major, one PR per major. No automerge. | `github>annotell/public-renovate-config//npm` |
+| `rust.json` | Group non-major, one PR per major. No automerge. | `github>annotell/public-renovate-config//rust` |
 
 ## Why each preset exists
 
@@ -70,8 +71,9 @@ force-pushed, or compromised shortly after release. None of that applies to
 packages we publish ourselves — we know what we shipped.
 
 Scope today is GHA (`annotell/*`), Python (`kognic-*`), Gradle
-(`com.kognic.*`), and npm (`@kognic/*`, `@annotell/*`). Other ecosystems
-(helm, go, docker) will be added when we roll them out.
+(`com.kognic.*`), npm (`@kognic/*`, `@annotell/*`), and Cargo git deps from
+`github.com/annotell/*` and `github.com/kognic/*`. Other ecosystems (helm,
+go, docker) will be added when we roll them out.
 
 ### `gha.json` — SHA-pin actions, group non-major
 
@@ -138,6 +140,29 @@ raises the declared range in `package.json` for in-range releases (e.g.
 mirroring the Python preset. Reviewers see the change in `package.json`,
 and downstream consumers of our published packages resolve from the actual
 tested floor.
+
+### `rust.json` — group non-major, one PR per major, no automerge
+
+Non-major Cargo bumps (minor + patch) grouped into one PR with `autoreview`.
+Major bumps get one PR per crate because major-version upgrades of core
+crates (tokio, serde, axum, etc.) frequently break source compatibility and
+benefit from individual review.
+
+Like `npm.json`, Cargo does **not** automerge non-major bumps. Cargo treats
+`0.x.y` as semver where every `0.x` bump is breaking, and Renovate already
+classifies those as major — but minor/patch bumps on `1.0+` crates still
+occasionally ship subtle behavior changes in the ecosystem, so we keep a
+human in the loop.
+
+Internal crates today are pulled directly from GitHub as `git = …` Cargo
+dependencies. CI authenticates with a GitHub App token and a
+`git config --global url.…insteadOf` rewrite (see e.g.
+`judgement-interpolator/.github/workflows/rust.yml`); the Renovate bot uses
+its own GitHub token to read the same repos, so no central host rule is
+needed here. The `github.com/annotell/*` and `github.com/kognic/*`
+carve-out in `internal.json` drops the 7-day cooldown for those Cargo git
+deps. If we later publish to a private crates registry, add a host rule in
+the self-hosted bot config rather than here.
 
 ## Opting out of a sub-preset
 
