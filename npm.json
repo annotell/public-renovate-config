@@ -1,0 +1,42 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "matchManagers": [
+        "npm",
+        "bun"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "npm (non-major)",
+      "groupSlug": "npm-non-major",
+      "addLabels": [
+        "autoreview"
+      ],
+      "automerge": false
+    },
+    {
+      "matchManagers": [
+        "npm",
+        "bun"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "addLabels": [
+        "autoreview"
+      ],
+      "automerge": false
+    },
+    {
+      "description": "Bump the locked version in the lockfile (package-lock.json, pnpm-lock.yaml, yarn.lock, bun.lock) even when the declared range in package.json still satisfies the new version. Without this, ranges like `^1.2.0` never produce a PR for an in-range release (e.g. 1.2.3 -> 1.2.4), and the lockfile drifts.",
+      "matchManagers": [
+        "npm",
+        "bun"
+      ],
+      "rangeStrategy": "update-lockfile"
+    }
+  ]
+}

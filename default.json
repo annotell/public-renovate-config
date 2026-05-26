@@ -8,7 +8,8 @@
     "github>annotell/public-renovate-config//gha",
     "github>annotell/public-renovate-config//python",
     "github>annotell/public-renovate-config//gradle",
-    "github>annotell/public-renovate-config//go"
+    "github>annotell/public-renovate-config//go",
+    "github>annotell/public-renovate-config//npm"
   ],
   "timezone": "Europe/Stockholm",
   "minimumReleaseAge": "7 days",

@@ -38,6 +38,7 @@ comments.
 | `python.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//python` |
 | `gradle.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//gradle` |
 | `go.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//go` |
+| `npm.json` | Group non-major, one PR per major. No automerge. | `github>annotell/public-renovate-config//npm` |
 
 ## Why each preset exists
 
@@ -68,9 +69,9 @@ The 7-day cooldown protects against third-party packages that get yanked,
 force-pushed, or compromised shortly after release. None of that applies to
 packages we publish ourselves — we know what we shipped.
 
-Scope today is GHA (`annotell/*`), Python (`kognic-*`), and Gradle
-(`com.kognic.*`). Other ecosystems (npm, helm, go, docker) will be added when
-we roll them out.
+Scope today is GHA (`annotell/*`), Python (`kognic-*`), Gradle
+(`com.kognic.*`), and npm (`@kognic/*`, `@annotell/*`). Other ecosystems
+(helm, go, docker) will be added when we roll them out.
 
 ### `gha.json` — SHA-pin actions, group non-major
 
@@ -112,6 +113,28 @@ changes to adopt — they benefit from individual review.
 
 We don't currently publish internal Go packages, so there's no `kognic-*`
 carve-out in `internal.json` for Go yet. Add one when that changes.
+
+### `npm.json` — group non-major, one PR per major, no automerge
+
+Non-major npm bumps (minor + patch) grouped into one PR with `autoreview`.
+Major bumps get one PR per package because major bumps in the JS ecosystem
+(react, next, eslint, vite, etc.) routinely ship breaking API changes and
+benefit from individual review.
+
+Unlike `go.json` and `gradle.json`, npm does **not** automerge non-major
+bumps. The JS ecosystem has a higher incidence of breaking changes shipped
+under minor/patch versions, so we keep a human in the loop.
+
+Internal packages are served from the GAR registry at
+`europe-west1-npm.pkg.dev/annotell-com/npm-default/` — repos configure that
+via a per-repo `.npmrc` (e.g. `@kognic:registry=…`), no central host rule
+needed. The `@kognic/*` and `@annotell/*` carve-outs in `internal.json` drop
+the 7-day cooldown for those scopes.
+
+The `npm` manager covers npm, pnpm, and yarn lockfiles; the `bun` manager
+covers `bun.lock(b)`. Both are included in the rules. The `update-lockfile`
+range strategy is set so in-range releases (e.g. `^1.2.0` → 1.2.4) still
+produce a PR that bumps the lockfile, matching the Python behaviour.
 
 ## Opting out of a sub-preset
 
