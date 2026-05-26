@@ -132,9 +132,12 @@ needed. The `@kognic/*` and `@annotell/*` carve-outs in `internal.json` drop
 the 7-day cooldown for those scopes.
 
 The `npm` manager covers npm, pnpm, and yarn lockfiles; the `bun` manager
-covers `bun.lock(b)`. Both are included in the rules. The `update-lockfile`
-range strategy is set so in-range releases (e.g. `^1.2.0` → 1.2.4) still
-produce a PR that bumps the lockfile, matching the Python behaviour.
+covers `bun.lock(b)`. Both are included in the rules. `rangeStrategy: bump`
+raises the declared range in `package.json` for in-range releases (e.g.
+`^18.2.0` locked at 18.2.5 → `^18.2.6` with the lockfile at 18.2.6),
+mirroring the Python preset. Reviewers see the change in `package.json`,
+and downstream consumers of our published packages resolve from the actual
+tested floor.
 
 ## Opting out of a sub-preset
 
