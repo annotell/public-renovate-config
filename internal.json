@@ -33,6 +33,17 @@
         "/^com\\.kognic\\./"
       ],
       "minimumReleaseAge": "0 days"
+    },
+    {
+      "matchManagers": [
+        "npm",
+        "bun"
+      ],
+      "matchPackageNames": [
+        "/^@kognic\\//",
+        "/^@annotell\\//"
+      ],
+      "minimumReleaseAge": "0 days"
     }
   ]
 }
