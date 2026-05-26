@@ -44,6 +44,15 @@
         "/^@annotell\\//"
       ],
       "minimumReleaseAge": "0 days"
+    },
+    {
+      "matchManagers": [
+        "cargo"
+      ],
+      "matchPackageNames": [
+        "/github\\.com\\/(annotell|kognic)\\//"
+      ],
+      "minimumReleaseAge": "0 days"
     }
   ]
 }

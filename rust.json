@@ -1,0 +1,32 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "matchManagers": [
+        "cargo"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "rust (non-major)",
+      "groupSlug": "rust-non-major",
+      "addLabels": [
+        "autoreview"
+      ],
+      "automerge": false
+    },
+    {
+      "matchManagers": [
+        "cargo"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "addLabels": [
+        "autoreview"
+      ],
+      "automerge": false
+    }
+  ]
+}
