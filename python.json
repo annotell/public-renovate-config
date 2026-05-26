@@ -72,6 +72,16 @@
         "autoreview"
       ],
       "automerge": false
+    },
+    {
+      "description": "Bump the locked version in the lockfile (uv.lock, poetry.lock, Pipfile.lock, compiled requirements.txt) even when the declared range in pyproject.toml still satisfies the new version. Without this, ranges like `cachetools >=5,<8` never produce a PR for an in-range release (e.g. 7.1.2 -> 7.1.4), and the lockfile drifts. Scoped to lockfile-aware managers only: pip_requirements and pip_setup are intentionally excluded because they typically have no separate lockfile, and update-lockfile would skip those deps entirely.",
+      "matchManagers": [
+        "pep621",
+        "poetry",
+        "pipenv",
+        "pip-compile"
+      ],
+      "rangeStrategy": "update-lockfile"
     }
   ]
 }
