@@ -56,9 +56,9 @@ packages bypass it via `internal.json`.
 bumps land as `fix(deps): …` rather than Renovate's default `chore(deps): …`.
 Under Conventional Commits, `fix` is release-triggering (patch) while `chore`
 is not, so this lets release-please / semantic-release cut a release when a dep
-update merges. `semanticCommits` stays at its default (`"auto"`), so the prefix
-only applies in repos whose history already uses Conventional Commits — repos
-that don't won't have `fix(deps):` forced onto them.
+update merges. `semanticCommits: "enabled"` forces the prefix in every repo
+rather than the default `"auto"`, which would only apply it where the commit
+history already uses Conventional Commits.
 
 ### `schedule.json` — business-hours window for language deps
 
