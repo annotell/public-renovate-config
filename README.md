@@ -30,7 +30,7 @@ comments.
 
 | File | Purpose | Opt-out string |
 |---|---|---|
-| `default.json` | Entry point. 7-day cooldown, labels, dependency dashboard. | — (don't extend this repo at all) |
+| `default.json` | Entry point. 7-day cooldown, `fix(deps)` commit prefix, labels, dependency dashboard. | — (don't extend this repo at all) |
 | `schedule.json` | Time windows: language deps daytime-only weekdays, GHA any hour weekdays. | `github>annotell/public-renovate-config//schedule` |
 | `security.json` | Vuln PRs bypass cooldown + schedule. | `github>annotell/public-renovate-config//security` |
 | `internal.json` | Drops the 7-day cooldown for Kognic-published packages (internal GHA, `kognic-*` Python). | `github>annotell/public-renovate-config//internal` |
@@ -49,6 +49,16 @@ comments.
 releases a week to surface regressions, yanks, or force-pushes before we offer
 the bump. Security PRs bypass this via `security.json`; Kognic-published
 packages bypass it via `internal.json`.
+
+### `default.json` — `fix(deps)` commit prefix
+
+`semanticCommitType: "fix"` + `semanticCommitScope: "deps"` make dependency
+bumps land as `fix(deps): …` rather than Renovate's default `chore(deps): …`.
+Under Conventional Commits, `fix` is release-triggering (patch) while `chore`
+is not, so this lets release-please / semantic-release cut a release when a dep
+update merges. `semanticCommits: "enabled"` forces the prefix in every repo
+rather than the default `"auto"`, which would only apply it where the commit
+history already uses Conventional Commits.
 
 ### `schedule.json` — business-hours window for language deps
 

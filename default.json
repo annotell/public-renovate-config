@@ -14,6 +14,9 @@
   ],
   "timezone": "Europe/Stockholm",
   "minimumReleaseAge": "7 days",
+  "semanticCommits": "enabled",
+  "semanticCommitType": "fix",
+  "semanticCommitScope": "deps",
   "addLabels": [
     "dependencies"
   ],
