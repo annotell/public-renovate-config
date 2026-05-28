@@ -39,6 +39,16 @@
         "org.scala-lang:scala-library"
       ],
       "enabled": false
+    },
+    {
+      "description": "ScalaTest uses -SNAP<n> as a pre-release marker (e.g. 3.3.0-SNAP4) which Renovate's Maven versioning does not recognize as unstable. Restrict to plain X.Y.Z releases so we never get pre-releases or -SNAPSHOT dev builds.",
+      "matchManagers": [
+        "gradle"
+      ],
+      "matchPackageNames": [
+        "org.scalatest:{/,}**"
+      ],
+      "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
     }
   ]
 }
