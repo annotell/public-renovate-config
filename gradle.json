@@ -29,6 +29,16 @@
         "autoreview"
       ],
       "automerge": false
+    },
+    {
+      "description": "Scala version bumps must be human-triggered. Renovate keeps closing these PRs and bumping the Scala stdlib has cross-cutting compiler/library implications that need a coordinated upgrade.",
+      "matchManagers": [
+        "gradle"
+      ],
+      "matchPackageNames": [
+        "org.scala-lang:scala-library"
+      ],
+      "enabled": false
     }
   ]
 }
