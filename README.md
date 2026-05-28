@@ -36,6 +36,7 @@ comments.
 | `internal.json` | Drops the 7-day cooldown for Kognic-published packages (internal GHA, `kognic-*` Python). | `github>annotell/public-renovate-config//internal` |
 | `gha.json` | SHA-pin GitHub Actions, group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//gha` |
 | `python.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//python` |
+| `python-lib.json` | **Opt-in.** Switch `rangeStrategy` to `update-lockfile` for published Python libraries. | not extended by default — add via per-repo `renovate.json` |
 | `gradle.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//gradle` |
 | `go.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//go` |
 | `npm.json` | Group non-major, one PR per major. No automerge. | `github>annotell/public-renovate-config//npm` |
@@ -101,6 +102,33 @@ Non-major Python bumps grouped into one PR with `autoreview` + `automerge`.
 Major bumps get one PR per package because Python major bumps frequently
 break public APIs (sqlalchemy, pydantic, fastapi, etc.) and benefit from
 individual review.
+
+### `python-lib.json` — opt-in `update-lockfile` for published libraries
+
+`python.json` sets `rangeStrategy: bump` so application repos publish PRs that
+raise the declared floor in `pyproject.toml` alongside the lockfile — humans
+see the actual minimum tested version in the manifest and reviewers can spot
+the bump at a glance.
+
+Published Python libraries want the opposite: a wide declared range
+(`>=5,<8`) so downstream consumers can resolve compatible versions, with only
+the lockfile updated to pin the version we tested. Lib repos opt in by adding
+a per-repo `renovate.json`:
+
+```json
+{
+  "extends": [
+    "github>annotell/public-renovate-config",
+    "github>annotell/public-renovate-config//python-lib"
+  ]
+}
+```
+
+The `python-lib` preset is applied *after* `default` → `python`, so its
+`rangeStrategy: update-lockfile` rule wins for the lockfile-aware managers
+(`pep621`, `poetry`, `pipenv`, `pip-compile`). `pip_requirements` and
+`pip_setup` are intentionally omitted — they have no separate lockfile, so
+`update-lockfile` has nothing to update.
 
 ### `gradle.json` — group non-major, one PR per major
 
