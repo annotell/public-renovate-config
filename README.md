@@ -37,7 +37,7 @@ comments.
 | `gha.json` | SHA-pin GitHub Actions, group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//gha` |
 | `python.json` | Group non-major with automerge, one PR per major. `update-lockfile` range strategy. | `github>annotell/public-renovate-config//python` |
 | `gradle.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//gradle` |
-| `go.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//go` |
+| `go.json` | Group non-major with automerge, one PR per major. `go mod tidy` + import-path rewrite on bumps. | `github>annotell/public-renovate-config//go` |
 | `npm.json` | Group non-major, one PR per major. No automerge. `update-lockfile` range strategy. | `github>annotell/public-renovate-config//npm` |
 | `rust.json` | Group non-major, one PR per major. No automerge. | `github>annotell/public-renovate-config//rust` |
 
@@ -133,6 +133,26 @@ passing test suite is a strong signal that a minor/patch bump is safe.
 Major bumps get one PR per module because Go major versions are explicit
 breaking changes (the import path changes, e.g. `foo/v2`) and need code
 changes to adopt — they benefit from individual review.
+
+`postUpdateOptions: ["gomodTidy", "gomodUpdateImportPaths"]` runs after every
+gomod update:
+
+- `gomodTidy` runs `go mod tidy` so `go.mod` / `go.sum` land tidy rather than
+  requiring a follow-up commit. Renovate reconciles `go.sum` by default but
+  does **not** tidy unless this is set.
+- `gomodUpdateImportPaths` rewrites versioned import paths across the source
+  tree on major bumps (e.g. `foo/v2` → `foo/v3`), using the `mod` tool. This
+  is the breaking part of a Go major bump: without it the require directive
+  updates but the `import` lines don't, so the PR fails to compile. It is the
+  native replacement for hand-rolled `sed` rewrites in `postUpgradeTasks` —
+  and unlike `postUpgradeTasks` it needs no self-hosted `allowedCommands`
+  allowlist, since it's a trusted built-in rather than an arbitrary command.
+  It is a no-op on repos that never hit a Go major bump, so it's safe to apply
+  to every Go repo.
+
+These still don't make major bumps zero-touch — API changes within the bumped
+module may need manual fixes — but they remove the mechanical `go.mod`/import
+churn that previously had to be committed by hand.
 
 We don't currently publish internal Go packages, so there's no `kognic-*`
 carve-out in `internal.json` for Go yet. Add one when that changes.
