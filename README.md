@@ -77,6 +77,16 @@ global 7-day cooldown, plus `:pinDevDependencies`, which fights the
 - `abandonments:recommended` flags dependencies with no release for over a year
   on the dependency dashboard. Signal only — no automated action.
 
+We also **disable the `replacement` update type** (`matchUpdateTypes:
+["replacement"]`, `enabled: false`). `config:recommended` pulls in
+`replacements:all`, whose community-maintained mappings open PRs swapping a
+deprecated package for its successor. Because the bot force-adds the
+`autoreview` label to every PR, a rename PR would be eligible for the bot's
+automerge flow — and a package rename is exactly the kind of change we want a
+human to adopt deliberately after a real build failure. There is no
+`removeLabels` in Renovate, so withholding the label isn't possible; disabling
+the update type is the clean lever.
+
 ### `schedule.json` — business-hours window for language deps
 
 Language deps land between 08:00 and 16:00 on weekdays so the

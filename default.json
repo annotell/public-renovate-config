@@ -33,6 +33,13 @@
         "docker-compose"
       ],
       "minimumReleaseAge": "0 days"
+    },
+    {
+      "description": "Disable automatic package-rename PRs. config:recommended pulls in replacements:all, whose community-maintained mappings open PRs proposing a deprecated package be swapped for its successor. A rename is exactly the kind of change we want a human to notice during a real build failure and adopt deliberately, not have routed through the autoreview automerge flow (the bot force-adds the autoreview label to every PR, so we can't keep these human-only by withholding the label). Disabling the replacement update type suppresses them entirely.",
+      "matchUpdateTypes": [
+        "replacement"
+      ],
+      "enabled": false
     }
   ]
 }
