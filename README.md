@@ -35,11 +35,10 @@ comments.
 | `security.json` | Vuln PRs bypass cooldown + schedule. | `github>annotell/public-renovate-config//security` |
 | `internal.json` | Drops the 7-day cooldown for Kognic-published packages (internal GHA, `kognic-*` Python). | `github>annotell/public-renovate-config//internal` |
 | `gha.json` | SHA-pin GitHub Actions, group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//gha` |
-| `python.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//python` |
-| `python-lib.json` | **Opt-in.** Switch `rangeStrategy` to `update-lockfile` for published Python libraries. | not extended by default — add via per-repo `renovate.json` |
+| `python.json` | Group non-major with automerge, one PR per major. `update-lockfile` range strategy. | `github>annotell/public-renovate-config//python` |
 | `gradle.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//gradle` |
 | `go.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//go` |
-| `npm.json` | Group non-major, one PR per major. No automerge. | `github>annotell/public-renovate-config//npm` |
+| `npm.json` | Group non-major, one PR per major. No automerge. `update-lockfile` range strategy. | `github>annotell/public-renovate-config//npm` |
 | `rust.json` | Group non-major, one PR per major. No automerge. | `github>annotell/public-renovate-config//rust` |
 
 ## Why each preset exists
@@ -103,32 +102,16 @@ Major bumps get one PR per package because Python major bumps frequently
 break public APIs (sqlalchemy, pydantic, fastapi, etc.) and benefit from
 individual review.
 
-### `python-lib.json` — opt-in `update-lockfile` for published libraries
-
-`python.json` sets `rangeStrategy: bump` so application repos publish PRs that
-raise the declared floor in `pyproject.toml` alongside the lockfile — humans
-see the actual minimum tested version in the manifest and reviewers can spot
-the bump at a glance.
-
-Published Python libraries want the opposite: a wide declared range
-(`>=5,<8`) so downstream consumers can resolve compatible versions, with only
-the lockfile updated to pin the version we tested. Lib repos opt in by adding
-a per-repo `renovate.json`:
-
-```json
-{
-  "extends": [
-    "github>annotell/public-renovate-config",
-    "github>annotell/public-renovate-config//python-lib"
-  ]
-}
-```
-
-The `python-lib` preset is applied *after* `default` → `python`, so its
-`rangeStrategy: update-lockfile` rule wins for the lockfile-aware managers
-(`pep621`, `poetry`, `pipenv`, `pip-compile`). `pip_requirements` and
-`pip_setup` are intentionally omitted — they have no separate lockfile, so
-`update-lockfile` has nothing to update.
+`rangeStrategy: update-lockfile` updates only the lockfile to the latest
+in-range version and leaves the declared range in `pyproject.toml` untouched
+(e.g. `cachetools >=5,<8` locked at 7.1.2 → uv.lock at 7.1.4, `pyproject.toml`
+unchanged). This keeps the declared range wide so downstream consumers
+resolving from our published wheels can pick compatible versions, while we
+test and pin the latest in-range version via the lockfile. Renovate runs the
+manager's lock tool (`uv lock`, `poetry lock`, etc.) to refresh it. Scoped to
+lockfile-aware managers (`pep621`, `poetry`, `pipenv`, `pip-compile`);
+`pip_requirements` and `pip_setup` are omitted because they have no separate
+lockfile to update.
 
 ### `gradle.json` — group non-major, one PR per major
 
@@ -172,12 +155,13 @@ needed. The `@kognic/*` and `@annotell/*` carve-outs in `internal.json` drop
 the 7-day cooldown for those scopes.
 
 The `npm` manager covers npm, pnpm, and yarn lockfiles; the `bun` manager
-covers `bun.lock(b)`. Both are included in the rules. `rangeStrategy: bump`
-raises the declared range in `package.json` for in-range releases (e.g.
-`^18.2.0` locked at 18.2.5 → `^18.2.6` with the lockfile at 18.2.6),
-mirroring the Python preset. Reviewers see the change in `package.json`,
-and downstream consumers of our published packages resolve from the actual
-tested floor.
+covers `bun.lock(b)`. Both are included in the rules. `rangeStrategy:
+update-lockfile` updates only the lockfile to the latest in-range version and
+leaves the declared range in `package.json` untouched (e.g. `^18.2.0` locked
+at 18.2.5 → lockfile at 18.2.6, `package.json` unchanged). This keeps the
+declared range wide so downstream consumers of our published packages
+(@kognic/*, @annotell/*) can resolve compatible versions, while we test and
+pin the latest in-range version via the lockfile. Mirrors `python.json`.
 
 ### `rust.json` — group non-major, one PR per major, no automerge
 

@@ -33,12 +33,12 @@
       "prConcurrentLimit": 2
     },
     {
-      "description": "Keep package.json and the lockfile in sync by raising the declared range when a new in-range version is released, and updating the lockfile in the same PR. Example: `\"react\": \"^18.2.0\"` locked at 18.2.5 becomes `\"react\": \"^18.2.6\"` with the lockfile at 18.2.6 — humans reading package.json see the actual minimum tested version, and downstream consumers of our published packages (@kognic/*, @annotell/*) resolve from the same floor. Renovate runs `npm/pnpm/yarn install` (or `bun install`) after the manifest edit, so bump covers what update-lockfile would have done.",
+      "description": "Update only the lockfile to the latest in-range version, leaving the declared range in package.json untouched. Example: `\"react\": \"^18.2.0\"` locked at 18.2.5 becomes the lockfile at 18.2.6 while package.json still reads `^18.2.0`. This keeps the declared range wide so downstream consumers of our published packages (@kognic/*, @annotell/*) can resolve compatible versions, while we test and pin the latest in-range version via the lockfile. Renovate runs `npm/pnpm/yarn install` (or `bun install`) to refresh the lockfile.",
       "matchManagers": [
         "npm",
         "bun"
       ],
-      "rangeStrategy": "bump"
+      "rangeStrategy": "update-lockfile"
     }
   ]
 }
