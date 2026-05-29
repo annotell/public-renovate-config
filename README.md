@@ -30,7 +30,7 @@ comments.
 
 | File | Purpose | Opt-out string |
 |---|---|---|
-| `default.json` | Entry point. 7-day cooldown, `fix(deps)` commit prefix, labels, dependency dashboard. | — (don't extend this repo at all) |
+| `default.json` | Entry point. 7-day cooldown, `fix(deps)` commit prefix, labels, dependency dashboard, docker digest pinning, config migration, abandonment flagging. | — (don't extend this repo at all) |
 | `schedule.json` | Time windows: language deps daytime-only weekdays, GHA any hour weekdays. | `github>annotell/public-renovate-config//schedule` |
 | `security.json` | Vuln PRs bypass cooldown + schedule. | `github>annotell/public-renovate-config//security` |
 | `internal.json` | Drops the 7-day cooldown for Kognic-published packages (internal GHA, `kognic-*` Python). | `github>annotell/public-renovate-config//internal` |
@@ -59,6 +59,33 @@ is not, so this lets release-please / semantic-release cut a release when a dep
 update merges. `semanticCommits: "enabled"` forces the prefix in every repo
 rather than the default `"auto"`, which would only apply it where the commit
 history already uses Conventional Commits.
+
+### `default.json` — `docker:pinDigests`, `:configMigration`, `abandonments:recommended`
+
+Three pieces of `config:best-practices` adopted individually (we deliberately
+do **not** extend `config:best-practices` wholesale — it would pull in
+`security:minimumReleaseAgeNpm`, which is npm-only/3-day and weaker than our
+global 7-day cooldown, plus `:pinDevDependencies`, which fights the
+`update-lockfile` strategy that keeps our published-library ranges wide).
+
+- `docker:pinDigests` pins images to `image:tag@sha256:…`, keeping the
+  human-readable tag inline while locking the digest. Bumps update both tag and
+  digest together. The docker `minimumReleaseAge: "0 days"` exemption below
+  means digest pins ship without the cooldown quarantine.
+- `:configMigration` opens a PR whenever Renovate deprecates or renames a
+  config key, keeping these presets current.
+- `abandonments:recommended` flags dependencies with no release for over a year
+  on the dependency dashboard. Signal only — no automated action.
+
+We also **disable the `replacement` update type** (`matchUpdateTypes:
+["replacement"]`, `enabled: false`). `config:recommended` pulls in
+`replacements:all`, whose community-maintained mappings open PRs swapping a
+deprecated package for its successor. Because the bot force-adds the
+`autoreview` label to every PR, a rename PR would be eligible for the bot's
+automerge flow — and a package rename is exactly the kind of change we want a
+human to adopt deliberately after a real build failure. There is no
+`removeLabels` in Renovate, so withholding the label isn't possible; disabling
+the update type is the clean lever.
 
 ### `schedule.json` — business-hours window for language deps
 
