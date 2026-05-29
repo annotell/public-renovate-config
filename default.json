@@ -2,6 +2,9 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
+    "docker:pinDigests",
+    ":configMigration",
+    "abandonments:recommended",
     "github>annotell/public-renovate-config//schedule",
     "github>annotell/public-renovate-config//security",
     "github>annotell/public-renovate-config//internal",
