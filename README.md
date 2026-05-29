@@ -38,7 +38,7 @@ comments.
 | `python.json` | Group non-major with automerge, one PR per major. `update-lockfile` range strategy. | `github>annotell/public-renovate-config//python` |
 | `gradle.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//gradle` |
 | `go.json` | Group non-major with automerge, one PR per major. | `github>annotell/public-renovate-config//go` |
-| `npm.json` | Group non-major, one PR per major. No automerge. | `github>annotell/public-renovate-config//npm` |
+| `npm.json` | Group non-major, one PR per major. No automerge. `update-lockfile` range strategy. | `github>annotell/public-renovate-config//npm` |
 | `rust.json` | Group non-major, one PR per major. No automerge. | `github>annotell/public-renovate-config//rust` |
 
 ## Why each preset exists
@@ -155,14 +155,13 @@ needed. The `@kognic/*` and `@annotell/*` carve-outs in `internal.json` drop
 the 7-day cooldown for those scopes.
 
 The `npm` manager covers npm, pnpm, and yarn lockfiles; the `bun` manager
-covers `bun.lock(b)`. Both are included in the rules. `rangeStrategy: bump`
-raises the declared range in `package.json` for in-range releases (e.g.
-`^18.2.0` locked at 18.2.5 → `^18.2.6` with the lockfile at 18.2.6).
-Reviewers see the change in `package.json`, and downstream consumers of our
-published packages resolve from the actual tested floor. (Unlike `python.json`,
-which uses `update-lockfile` to keep the declared range wide for published
-libraries, npm raises the range — most of our npm repos are apps, not
-published libraries.)
+covers `bun.lock(b)`. Both are included in the rules. `rangeStrategy:
+update-lockfile` updates only the lockfile to the latest in-range version and
+leaves the declared range in `package.json` untouched (e.g. `^18.2.0` locked
+at 18.2.5 → lockfile at 18.2.6, `package.json` unchanged). This keeps the
+declared range wide so downstream consumers of our published packages
+(@kognic/*, @annotell/*) can resolve compatible versions, while we test and
+pin the latest in-range version via the lockfile. Mirrors `python.json`.
 
 ### `rust.json` — group non-major, one PR per major, no automerge
 
